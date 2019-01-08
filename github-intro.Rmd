@@ -1,0 +1,20 @@
+---
+title: "Intro to Github HW"
+author: "Your Name Goes Here"
+date: "1/7/2019"
+output: github_document
+---
+
+```{r libs, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load Libraries
+
+Insert a code chunk to load the `tidyverse`, `unvotes`, and `lubridate` packages.
+Use the `knitr` option `include = FALSE`. 
+
+## Plot the Data
+
+Choose a country in the data set and replicate what we did in class by 
+substituting that country for Australia.
