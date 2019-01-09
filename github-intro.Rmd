@@ -17,4 +17,6 @@ Use the `knitr` option `include = FALSE`.
 ## Plot the Data
 
 Choose a country in the data set and replicate what we did in class by 
-substituting that country for Australia.
+substituting that country for Australia. Knit the document so that a new
+`github-intro.md` file is created, add it to the repo, commit it, and push it
+to github. 
