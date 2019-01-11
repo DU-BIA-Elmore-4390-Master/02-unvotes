@@ -5,7 +5,7 @@ date: "1/7/2019"
 output: github_document
 ---
 
-```{r libs, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -20,3 +20,48 @@ Choose a country in the data set and replicate what we did in class by
 substituting that country for Australia. Knit the document so that a new
 `github-intro.md` file is created, add it to the repo, commit it, and push it
 to github. 
+
+```{r libs, include = FALSE}
+## This code chunk is being evaluated but it's not included in the doc.
+library(tidyverse)
+library(unvotes)
+library(lubridate)
+```
+
+Next, I'll either import and/or manipulate date and, again, I won't include 
+this chunk in the document. See the `.Rmd` file for the data manipulation code.
+
+```{r data}
+un_votes_joined <- un_votes %>%
+  filter(country %in% c("United States of America", "Turkey")) %>%
+  inner_join(un_roll_calls, by = "rcid") %>%
+  inner_join(un_roll_call_issues, by = "rcid") %>%
+  group_by(country, year = year(date), issue) %>%
+  summarize(
+    votes = n(),
+    percent_yes = mean(vote == "yes")
+  ) %>%
+  filter(votes > 5) # only use records where there are more than 5 votes
+```
+
+Finally, I will write the document by weaving text with code. For example, 
+Figure 1 illustrates how the US and Australia have voted in the UN on 
+various issues. 
+
+```{r fig-un-votes, echo = FALSE, fig.width = 8, fig.height = 10, fig.cap="Percentage of 'Yes' Votes."}
+p <- ggplot(un_votes_joined,
+            aes(x = year, y = percent_yes, color = country))
+p + geom_point() +
+  geom_smooth(method = "loess", se = FALSE) +
+  facet_wrap(~ issue, nrow = 3) +
+  scale_color_brewer(palette = "Dark2", labels = c("Turkey", "U.S.A.")) +
+  theme_bw() +
+  labs(
+    title = "Percentage of 'Yes' votes in the UN General Assembly",
+    subtitle = "1946 to 2015",
+    y = "% Yes",
+    x = "Year",
+    color = "Country"
+  )
+```
+
